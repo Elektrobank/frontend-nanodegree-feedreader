@@ -20,12 +20,14 @@ $(function () {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
+
+        //checks for allFeeds to be defined and have content
         it('are defined,', function () {
             expect(allFeeds).toBeDefined();
             expect(allFeeds.length).not.toBe(0);
         });
 
-
+        //checks for allFeeds urls to be defined and have content
         it('feed urls are defined,', function () {
             for (i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).toBeDefined();
@@ -33,7 +35,7 @@ $(function () {
             }
         });
 
-
+        //checks for allFeeds feed names to be defined and have content
         it('and feed names are defined.', function () {
             for (i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].name).toBeDefined();
@@ -45,16 +47,19 @@ $(function () {
 
     describe('The menu', function () {
 
+        //checks for menu to be hidden by default when page loads
         it('is hidden by default.', function () {
             expect($('body').hasClass('menu-hidden')).toBe(true);
         });
 
+        //checks for menu to be visible when clicked/toggled while menu is hidden
         it('It toggles to show', function () {
             if ($('body').hasClass('menu-hidden') && ($('.menu-icon-link').trigger('click'))) {
                 expect($('body').hasClass('menu-hidden')).toBe(false);
             }
         });
 
+        //checks for menu to be hidden when clicked/toggled while menu is visible
         it('and toggles to hide.', function () {
             if (!$('body').hasClass('menu-hidden') && ($('.menu-icon-link').trigger('click'))) {
                 expect($('body').hasClass('menu-hidden')).toBe(true);
@@ -64,12 +69,14 @@ $(function () {
 
     describe('Initial Entries', function () {
 
+        //loads Asynchronous loadFeed() before each it spec 
         beforeEach(function (done) {
             loadFeed(0, function () {
                 done();
             });
         });
 
+        //checks for .entry to contain content
         it('has at least a single .entry element within the .feed container.', function () {
             var feedEntryLen = $('.entry').length;
             expect(feedEntryLen > 0).toBe(true);
@@ -78,16 +85,18 @@ $(function () {
 
     describe('New Feed Selection', function () {
 
+        //loads Asynchronous loadFeed() before each it spec 
         beforeEach(function (done) {
             loadFeed(0, function () {
                 done();
             });
         });
 
+        //checks that .feed content is updated when new feed is loaded
         it('The content actually changes when a new feed is loaded.', function (done) {
-            var feed2, feed1 = $('.feed').text();
-            loadFeed(1, function () {
-                var feed2 = $('.feed').text();
+            var feed2, feed1 = $('.feed').text(); //creates feed variables, populates feed1 with current feed
+            loadFeed(1, function () { //load new feed
+                var feed2 = $('.feed').text(); //populate feed2 with new feed
                 done();
             });
             expect(feed1).not.toEqual(feed2);
