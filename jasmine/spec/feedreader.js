@@ -31,7 +31,7 @@ $(function () {
         it('feed urls are defined,', function () {
             for (i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).toBeDefined();
-                expect(allFeeds[i].url).not.toBe(0);
+                expect(allFeeds[i].url).not.toEqual('');
             }
         });
 
@@ -39,7 +39,7 @@ $(function () {
         it('and feed names are defined.', function () {
             for (i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].name).toBeDefined();
-                expect(allFeeds[i].name).not.toBe(0);
+                expect(allFeeds[i].name).not.toEqual('');
             }
         });
     });
@@ -54,16 +54,14 @@ $(function () {
 
         //checks for menu to be visible when clicked/toggled while menu is hidden
         it('It toggles to show', function () {
-            if ($('body').hasClass('menu-hidden') && ($('.menu-icon-link').trigger('click'))) {
+            ($('.menu-icon-link').trigger('click'));
                 expect($('body').hasClass('menu-hidden')).toBe(false);
-            }
         });
 
         //checks for menu to be hidden when clicked/toggled while menu is visible
         it('and toggles to hide.', function () {
-            if (!$('body').hasClass('menu-hidden') && ($('.menu-icon-link').trigger('click'))) {
+            ($('.menu-icon-link').trigger('click'));
                 expect($('body').hasClass('menu-hidden')).toBe(true);
-            }
         });
     });
 
@@ -71,15 +69,13 @@ $(function () {
 
         //loads Asynchronous loadFeed() before each it spec 
         beforeEach(function (done) {
-            loadFeed(0, function () {
-                done();
+            loadFeed(0, done);
             });
-        });
 
         //checks for .entry to contain content
         it('has at least a single .entry element within the .feed container.', function () {
-            var feedEntryLen = $('.entry').length;
-            expect(feedEntryLen > 0).toBe(true);
+            var feedEntryLen = $('.feed .entry').length;
+            expect(feedEntryLen).toBeGreaterThan(0);
         });
     });
 
@@ -87,9 +83,7 @@ $(function () {
 
         //loads Asynchronous loadFeed() before each it spec 
         beforeEach(function (done) {
-            loadFeed(0, function () {
-                done();
-            });
+            loadFeed(0, done);
         });
 
         //checks that .feed content is updated when new feed is loaded
@@ -97,9 +91,9 @@ $(function () {
             var feed2, feed1 = $('.feed').text(); //creates feed variables, populates feed1 with current feed
             loadFeed(1, function () { //load new feed
                 var feed2 = $('.feed').text(); //populate feed2 with new feed
+                expect(feed1).not.toEqual(feed2);
                 done();
-            });
-            expect(feed1).not.toEqual(feed2);
+            });           
         });
     });
 }());
